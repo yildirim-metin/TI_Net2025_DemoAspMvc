@@ -1,0 +1,11 @@
+﻿namespace TI_Net2025_DemoAspMvc.Models
+{
+    public class Book
+    {
+        public string Isbn { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Author { get; set; }
+        public DateTime Release {  get; set; }
+    }
+}

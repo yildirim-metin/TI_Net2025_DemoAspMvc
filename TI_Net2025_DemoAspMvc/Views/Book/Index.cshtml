@@ -1,0 +1,35 @@
+﻿@model List<Book>
+
+<h1>Book Index</h1>
+
+<a class="btn btn-primary"
+   asp-controller="Book"
+   asp-action="Add">Add book</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Author</th>
+            <th>Date de publication</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Book book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Release</td>
+                <td>
+                    <a class="btn btn-primary" 
+                    asp-controller="Book" 
+                    asp-action="Details"
+                    asp-route-isbn="@book.Isbn"
+                    >Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

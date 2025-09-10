@@ -1,0 +1,17 @@
+﻿@model Book
+
+<h1>Book Details</h1>
+<hr/>
+<dl class="row">
+    <dt class="col-sm-2">Isbn</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Isbn)</dd>
+    <dt class="col-sm-2">Title</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Title)</dd>
+    <dt class="col-sm-2">Author</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Author)</dd>
+    <dt class="col-sm-2">Release</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Release)</dd>
+    <dt class="col-sm-2">Description</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
+</dl>
+<a class="btn btn-primary" asp-controller="Book" asp-action="Index">Back to list</a>
