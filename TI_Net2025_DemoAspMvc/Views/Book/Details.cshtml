@@ -1,7 +1,7 @@
 ﻿@model Book
 
 <h1>Book Details</h1>
-<hr/>
+<hr />
 <dl class="row">
     <dt class="col-sm-2">Isbn</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.Isbn)</dd>
@@ -15,3 +15,14 @@
     <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
 </dl>
 <a class="btn btn-primary" asp-controller="Book" asp-action="Index">Back to list</a>
+<a class="btn btn-warning"
+   asp-controller="Book"
+   asp-action="Edit"
+   asp-route-isbn="@Model.Isbn">Edit</a>
+<form class="d-inline"
+      method="post"
+      asp-controller="Book"
+      asp-action="Remove"
+      asp-route-isbn="@Model.Isbn">
+    <button type="submit" class="btn btn-danger">Remove</button>
+</form>

@@ -28,6 +28,18 @@
                     asp-action="Details"
                     asp-route-isbn="@book.Isbn"
                     >Details</a>
+                    <a class="btn btn-warning"
+                       asp-controller="Book"
+                       asp-action="Edit"
+                       asp-route-isbn="@book.Isbn">Edit</a>
+                    <form class="d-inline"
+                        method="post"
+                        asp-controller="Book"
+                        asp-action="Remove"
+                        asp-route-isbn="@book.Isbn"
+                        >
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
                 </td>
             </tr>
         }
