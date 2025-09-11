@@ -1,4 +1,5 @@
 ﻿@using TI_Net2025_DemoAspMvc.Models.Dtos
+@using TI_Net2025_DemoAspMvc.Models.Dtos.Book
 
 @model BookDetailDto
 
@@ -10,7 +11,14 @@
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Title)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.Title)</dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Author)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(model => model.Author)</dd>
+    <dd class="col-sm-10">
+        <dl>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Author.Firstname)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Author.Firstname)</dd>
+            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Author.Lastname)</dt>
+            <dd class="col-sm-10">@Html.DisplayFor(model => model.Author.Lastname)</dd>
+        </dl>
+    </dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Release)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(model => model.Release)</dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Description)</dt>

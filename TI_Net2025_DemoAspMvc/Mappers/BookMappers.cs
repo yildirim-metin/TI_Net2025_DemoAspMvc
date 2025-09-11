@@ -1,4 +1,4 @@
-﻿using TI_Net2025_DemoAspMvc.Models.Dtos;
+﻿using TI_Net2025_DemoAspMvc.Models.Dtos.Book;
 using TI_Net2025_DemoAspMvc.Models.Entities;
 
 namespace TI_Net2025_DemoAspMvc.Mappers
@@ -12,7 +12,7 @@ namespace TI_Net2025_DemoAspMvc.Mappers
             {
                 Isbn = b.Isbn,
                 Title = b.Title,
-                Author = b.Author,
+                Author = b.Author.Lastname + " " + b.Author.Firstname,
                 Release = b.Release,
             };
         }
@@ -23,7 +23,7 @@ namespace TI_Net2025_DemoAspMvc.Mappers
             {
                 Isbn = b.Isbn,
                 Title = b.Title,
-                Author = b.Author,
+                Author = b.Author.ToAuthorDto(),
                 Release = b.Release,
                 Description = b.Description,
             };
@@ -35,7 +35,7 @@ namespace TI_Net2025_DemoAspMvc.Mappers
             {
                 Isbn = form.Isbn,
                 Title = form.Title,
-                Author = form.Author,
+                AuthorId = form.AuthorId,
                 Release = (DateTime) form.Release,
                 Description = form.Description,
             };
@@ -47,7 +47,7 @@ namespace TI_Net2025_DemoAspMvc.Mappers
             {
                 Isbn = book.Isbn,
                 Title = book.Title,
-                Author = book.Author,
+                AuthorId = book.AuthorId,
                 Release = book.Release,
                 Description = book.Description,
             };

@@ -2,7 +2,7 @@
 using NuGet.Protocol;
 using TI_Net2025_DemoAspMvc.Datas;
 using TI_Net2025_DemoAspMvc.Mappers;
-using TI_Net2025_DemoAspMvc.Models.Dtos;
+using TI_Net2025_DemoAspMvc.Models.Dtos.Book;
 using TI_Net2025_DemoAspMvc.Models.Entities;
 
 namespace TI_Net2025_DemoAspMvc.Controllers
@@ -11,7 +11,23 @@ namespace TI_Net2025_DemoAspMvc.Controllers
     {
         public IActionResult Index()
         {
-            List<Book> books = [.. FakeDb.Books];
+            List<Book> books = [
+                .. FakeDb.Books.Select(b => {
+                    b.Author = FakeDb.Authors.SingleOrDefault(a => a.Id == b.AuthorId);
+                    return b;
+                })
+            ];
+
+            //foreach( Book b in books )
+            //{
+            //    foreach( Author author in FakeDb.Authors )
+            //    {
+            //        if(author.Id == b.AuthorId)
+            //        {
+            //            b.Author = author;
+            //        }
+            //    }
+            //}
 
             List<BookIndexDto> dtos = books
                 .Select(book => book.ToBookIndexDto())
@@ -25,6 +41,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         {
 
             Book book = FakeDb.Books.SingleOrDefault(b => b.Isbn == isbn);
+            book.Author = FakeDb.Authors.SingleOrDefault(a => a.Id == book.AuthorId);
 
             if (book == null)
             {
@@ -36,6 +53,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
 
         public IActionResult Add()
         {
+            ViewData.Add("Authors", FakeDb.Authors);
             return View(new BookFormDto());
         }
 
@@ -44,7 +62,13 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewData.Add("Authors", FakeDb.Authors);
                 return View(book);
+            }
+
+            if(!FakeDb.Authors.Any(a=> a.Id == book.AuthorId))
+            {
+                throw new Exception($"Author with AuthorId {book.AuthorId} doesn't exist");
             }
 
             FakeDb.Books.Add(book.ToBook());
@@ -62,6 +86,8 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Book with isbn {isbn} not found");
             }
 
+            ViewData.Add("Authors", FakeDb.Authors);
+
             return View(book.ToBookFormDto());
         }
 
@@ -70,6 +96,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewData.Add("Authors", FakeDb.Authors);
                 return View(book);
             }
 
@@ -80,9 +107,14 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Book with isbn {isbn} not found");
             }
 
+            if (!FakeDb.Authors.Any(a => a.Id == book.AuthorId))
+            {
+                throw new Exception($"Author with AuthorId {book.AuthorId} doesn't exist");
+            }
+
             existing.Isbn = book.Isbn;
             existing.Title = book.Title;
-            existing.Author = book.Author;
+            existing.AuthorId = book.AuthorId;
             existing.Release = (DateTime) book.Release;
             existing.Description = book.Description;
 

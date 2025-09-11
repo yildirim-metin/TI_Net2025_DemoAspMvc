@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using TI_Net2025_DemoAspMvc.Validators;
 
-namespace TI_Net2025_DemoAspMvc.Models.Dtos
+namespace TI_Net2025_DemoAspMvc.Models.Dtos.Book
 {
     public class BookFormDto
     {
@@ -22,8 +22,7 @@ namespace TI_Net2025_DemoAspMvc.Models.Dtos
 
         [DisplayName("Auteur")]
         [Required(ErrorMessage = "Champ requis")]
-        [MaxLength(100)]
-        public string Author { get; set; }
+        public int AuthorId { get; set; }
 
         [DisplayName("Date de sortie")]
         [Required(ErrorMessage = "Champ requis")]
