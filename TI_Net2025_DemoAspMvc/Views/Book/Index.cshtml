@@ -2,48 +2,53 @@
 
 @model List<BookIndexDto>
 
-<h1>Book Index</h1>
+<h1>Liste de livre</h1>
 
 <a class="btn btn-primary"
    asp-controller="Book"
    asp-action="Add">Add book</a>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Titre</th>
-            <th>Author</th>
-            <th>Date de publication</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(BookIndexDto book in Model)
-        {
+@if (Model.Count == 0)
+{
+    <h2>Liste vide</h2>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@book.Title</td>
-                <td>@book.Author</td>
-                <td>@book.Release</td>
-                <td>
-                    <a class="btn btn-primary" 
-                    asp-controller="Book" 
-                    asp-action="Details"
-                    asp-route-isbn="@book.Isbn"
-                    >Details</a>
-                    <a class="btn btn-warning"
-                       asp-controller="Book"
-                       asp-action="Edit"
-                       asp-route-isbn="@book.Isbn">Edit</a>
-                    <form class="d-inline"
-                        method="post"
-                        asp-controller="Book"
-                        asp-action="Remove"
-                        asp-route-isbn="@book.Isbn"
-                        >
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </form>
-                </td>
+                <th>@Html.DisplayNameFor(m => m[0].Title)</th>
+                <th>@Html.DisplayNameFor(m => m[0].Author)</th>
+                <th>@Html.DisplayNameFor(m => m[0].Release)</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (BookIndexDto book in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(m => book.Title)</td>
+                    <td>@Html.DisplayFor(m => book.Author)</td>
+                    <td>@Html.DisplayFor(m => book.Release)</td>
+                    <td>
+                        <a class="btn btn-primary"
+                           asp-controller="Book"
+                           asp-action="Details"
+                           asp-route-isbn="@book.Isbn">Détails</a>
+                        <a class="btn btn-warning"
+                           asp-controller="Book"
+                           asp-action="Edit"
+                           asp-route-isbn="@book.Isbn">Modifier</a>
+                        <form class="d-inline"
+                              method="post"
+                              asp-controller="Book"
+                              asp-action="Remove"
+                              asp-route-isbn="@book.Isbn">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

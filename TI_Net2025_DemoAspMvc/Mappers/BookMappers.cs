@@ -36,7 +36,7 @@ namespace TI_Net2025_DemoAspMvc.Mappers
                 Isbn = form.Isbn,
                 Title = form.Title,
                 Author = form.Author,
-                Release = form.Release,
+                Release = (DateTime) form.Release,
                 Description = form.Description,
             };
         }

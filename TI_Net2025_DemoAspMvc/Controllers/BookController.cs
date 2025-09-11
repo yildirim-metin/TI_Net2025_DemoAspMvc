@@ -42,6 +42,10 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         [HttpPost]
         public IActionResult Add([FromForm] BookFormDto book)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(book);
+            }
 
             FakeDb.Books.Add(book.ToBook());
 
@@ -64,6 +68,11 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         [HttpPost("/book/edit/{isbn}")]
         public IActionResult Edit([FromRoute] string isbn, [FromForm] BookFormDto book)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(book);
+            }
+
             Book existing = FakeDb.Books.SingleOrDefault(book => book.Isbn == isbn);
 
             if (existing == null)
@@ -74,7 +83,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
             existing.Isbn = book.Isbn;
             existing.Title = book.Title;
             existing.Author = book.Author;
-            existing.Release = book.Release;
+            existing.Release = (DateTime) book.Release;
             existing.Description = book.Description;
 
             return RedirectToAction("Index", "Book");
