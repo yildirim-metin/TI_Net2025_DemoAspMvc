@@ -1,4 +1,4 @@
-﻿namespace TI_Net2025_DemoAspMvc.Models
+﻿namespace TI_Net2025_DemoAspMvc.Models.Entities
 {
     public class Book
     {

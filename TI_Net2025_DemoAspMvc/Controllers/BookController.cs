@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 using TI_Net2025_DemoAspMvc.Datas;
-using TI_Net2025_DemoAspMvc.Models;
+using TI_Net2025_DemoAspMvc.Mappers;
+using TI_Net2025_DemoAspMvc.Models.Dtos;
+using TI_Net2025_DemoAspMvc.Models.Entities;
 
 namespace TI_Net2025_DemoAspMvc.Controllers
 {
@@ -9,22 +12,17 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         public IActionResult Index()
         {
             List<Book> books = [.. FakeDb.Books];
-            return View(books);
+
+            List<BookIndexDto> dtos = books
+                .Select(book => book.ToBookIndexDto())
+                .ToList();
+
+            return View(dtos);
         }
 
         [HttpGet("/book/details/{isbn}")]
         public IActionResult Details([FromRoute] string isbn)
         {
-            //Book book = null;
-
-            //foreach (Book b in FakeDb.Books)
-            //{
-            //    if(b.Isbn == isbn)
-            //    {
-            //        book = b;
-            //        break;
-            //    }
-            //}
 
             Book book = FakeDb.Books.SingleOrDefault(b => b.Isbn == isbn);
 
@@ -33,19 +31,19 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Book with isbn {isbn} not found");
             }
 
-            return View(book);
+            return View(book.ToBookDetailDto());
         }
 
         public IActionResult Add()
         {
-            return View(new Book());
+            return View(new BookFormDto());
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm] Book book)
+        public IActionResult Add([FromForm] BookFormDto book)
         {
 
-            FakeDb.Books.Add(book);
+            FakeDb.Books.Add(book.ToBook());
 
             return RedirectToAction("Index", "Book");
         }
@@ -60,11 +58,11 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Book with isbn {isbn} not found");
             }
 
-            return View(book);
+            return View(book.ToBookFormDto());
         }
 
         [HttpPost("/book/edit/{isbn}")]
-        public IActionResult Edit([FromRoute] string isbn, [FromForm] Book book)
+        public IActionResult Edit([FromRoute] string isbn, [FromForm] BookFormDto book)
         {
             Book existing = FakeDb.Books.SingleOrDefault(book => book.Isbn == isbn);
 

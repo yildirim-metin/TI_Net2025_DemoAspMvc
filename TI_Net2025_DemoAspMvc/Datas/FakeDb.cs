@@ -1,4 +1,4 @@
-﻿using TI_Net2025_DemoAspMvc.Models;
+﻿using TI_Net2025_DemoAspMvc.Models.Entities;
 
 namespace TI_Net2025_DemoAspMvc.Datas
 {
