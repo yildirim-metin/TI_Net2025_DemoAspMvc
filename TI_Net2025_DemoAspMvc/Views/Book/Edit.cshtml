@@ -8,23 +8,23 @@
 
 <form asp-controller="Book" asp-action="Edit" asp-route-isbn="@Model.Isbn" method="post">
     <div class="form-group">
-        <label asp-for="Isbn">ISBN</label>
+        <label asp-for="Isbn">@Html.DisplayNameFor(model => model.Isbn)</label>
         <input asp-for="Isbn" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Title">Title</label>
+        <label asp-for="Title">@Html.DisplayNameFor(model => model.Title)</label>
         <input asp-for="Title" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Author">Author</label>
+        <label asp-for="Author">@Html.DisplayNameFor(model => model.Author)</label>
         <input asp-for="Author" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Release">Release</label>
+        <label asp-for="Release">@Html.DisplayNameFor(model => model.Release)</label>
         <input asp-for="Release" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Description">Description</label>
+        <label asp-for="Description">@Html.DisplayNameFor(model => model.Description)</label>
         <input asp-for="Description" class="form-control" />
     </div>
     <button type="submit" class="btn btn-primary mt-2">Edit</button>
