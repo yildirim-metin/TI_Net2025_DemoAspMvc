@@ -37,12 +37,12 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                         Title = (string)reader["TITLE"],
                         Description = reader["DESCRIPTION"] == DBNull.Value ? null : (string)reader["DESCRIPTION"],
                         Release = (DateTime)reader["RELEASE"],
-                        AuthorId = (int) reader["AUTHOR_ID"],
+                        AuthorId = (int)reader["AUTHOR_ID"],
                         Author = new Author()
                         {
                             Id = (int)reader["AUTHOR_ID"],
-                            Firstname = (string) reader["FIRST_NAME"],
-                            Lastname = (string) reader["LAST_NAME"],
+                            Firstname = (string)reader["FIRST_NAME"],
+                            Lastname = (string)reader["LAST_NAME"],
                         },
                     });
                 }
@@ -62,12 +62,45 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         public IActionResult Details([FromRoute] string isbn)
         {
 
-            Book book = FakeDb.Books.SingleOrDefault(b => b.Isbn == isbn);
-            book.Author = FakeDb.Authors.SingleOrDefault(a => a.Id == book.AuthorId);
+            Book book;
 
-            if (book == null)
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                throw new Exception($"Book with isbn {isbn} not found");
+                SqlCommand cmd = connection.CreateCommand();
+
+                cmd.CommandText = @"SELECT * 
+                                    FROM BOOK B 
+                                        JOIN AUTHOR A 
+                                            ON B.AUTHOR_ID = A.ID 
+                                    WHERE ISBN = @isbn";
+
+                cmd.Parameters.AddWithValue("@isbn", isbn);
+
+                connection.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (!reader.Read())
+                {
+                    throw new Exception($"Book with isbn {isbn} not found");
+                }
+
+                book = new Book()
+                {
+                    Isbn = (string)reader["ISBN"],
+                    Title = (string)reader["TITLE"],
+                    Description = reader["DESCRIPTION"] == DBNull.Value ? null : (string)reader["DESCRIPTION"],
+                    Release = (DateTime)reader["RELEASE"],
+                    AuthorId = (int)reader["AUTHOR_ID"],
+                    Author = new Author()
+                    {
+                        Id = (int)reader["AUTHOR_ID"],
+                        Firstname = (string)reader["FIRST_NAME"],
+                        Lastname = (string)reader["LAST_NAME"],
+                    },
+                };
+
+                connection.Close();
             }
 
             return View(book.ToBookDetailDto());
@@ -88,12 +121,30 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 return View(book);
             }
 
-            if(!FakeDb.Authors.Any(a=> a.Id == book.AuthorId))
+            if (!FakeDb.Authors.Any(a => a.Id == book.AuthorId))
             {
                 throw new Exception($"Author with AuthorId {book.AuthorId} doesn't exist");
             }
 
-            FakeDb.Books.Add(book.ToBook());
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = connection.CreateCommand();
+
+                cmd.CommandText = @"INSERT INTO BOOK(ISBN, TITLE, DESCRIPTION, RELEASE, AUTHOR_ID)
+                                    VALUES = (@isbn, @title, @description, @release, @authorId)";
+
+                cmd.Parameters.AddWithValue("@isbn", book.Isbn);
+                cmd.Parameters.AddWithValue("@title", book.Title);
+                cmd.Parameters.AddWithValue("@description", book.Description);
+                cmd.Parameters.AddWithValue("@release", book.Release);
+                cmd.Parameters.AddWithValue("@authorId", book.AuthorId);
+
+                connection.Open();
+
+                cmd.ExecuteNonQuery();
+
+                connection.Close();
+            }
 
             return RedirectToAction("Index", "Book");
         }
@@ -137,7 +188,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
             existing.Isbn = book.Isbn;
             existing.Title = book.Title;
             existing.AuthorId = book.AuthorId;
-            existing.Release = (DateTime) book.Release;
+            existing.Release = (DateTime)book.Release;
             existing.Description = book.Description;
 
             return RedirectToAction("Index", "Book");
