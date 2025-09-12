@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol;
+using Microsoft.Data.SqlClient;
 using TI_Net2025_DemoAspMvc.Datas;
 using TI_Net2025_DemoAspMvc.Mappers;
 using TI_Net2025_DemoAspMvc.Models.Dtos.Book;
@@ -9,25 +9,47 @@ namespace TI_Net2025_DemoAspMvc.Controllers
 {
     public class BookController : Controller
     {
+        private readonly string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=BookDb;Trusted_Connection=True;";
+
         public IActionResult Index()
         {
-            List<Book> books = [
-                .. FakeDb.Books.Select(b => {
-                    b.Author = FakeDb.Authors.SingleOrDefault(a => a.Id == b.AuthorId);
-                    return b;
-                })
-            ];
 
-            //foreach( Book b in books )
-            //{
-            //    foreach( Author author in FakeDb.Authors )
-            //    {
-            //        if(author.Id == b.AuthorId)
-            //        {
-            //            b.Author = author;
-            //        }
-            //    }
-            //}
+            List<Book> books = new List<Book>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = connection.CreateCommand();
+
+                cmd.CommandText = @"SELECT * 
+                                    FROM BOOK B 
+                                        JOIN AUTHOR A 
+                                            ON B.AUTHOR_ID = A.ID";
+
+                connection.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    books.Add(new Book
+                    {
+                        Isbn = (string)reader["ISBN"],
+                        Title = (string)reader["TITLE"],
+                        Description = reader["DESCRIPTION"] == DBNull.Value ? null : (string)reader["DESCRIPTION"],
+                        Release = (DateTime)reader["RELEASE"],
+                        AuthorId = (int) reader["AUTHOR_ID"],
+                        Author = new Author()
+                        {
+                            Id = (int)reader["AUTHOR_ID"],
+                            Firstname = (string) reader["FIRST_NAME"],
+                            Lastname = (string) reader["LAST_NAME"],
+                        },
+                    });
+                }
+
+                connection.Close();
+            }
+
 
             List<BookIndexDto> dtos = books
                 .Select(book => book.ToBookIndexDto())
