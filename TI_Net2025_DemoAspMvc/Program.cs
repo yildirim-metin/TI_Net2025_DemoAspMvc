@@ -1,7 +1,12 @@
+using TI_Net2025_DemoAspMvc.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<BookRepository>();
+builder.Services.AddScoped<AuthorRepository>();
 
 var app = builder.Build();
 
