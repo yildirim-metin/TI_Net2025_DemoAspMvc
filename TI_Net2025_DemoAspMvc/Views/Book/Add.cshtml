@@ -1,4 +1,5 @@
 ﻿@using TI_Net2025_DemoAspMvc.Models.Dtos
+@using TI_Net2025_DemoAspMvc.Models.Dtos.Author
 @using TI_Net2025_DemoAspMvc.Models.Dtos.Book
 @using TI_Net2025_DemoAspMvc.Models.Entities
 
@@ -23,7 +24,7 @@
     <div class="form-group">
         <label asp-for="AuthorId">@Html.DisplayNameFor(model => model.AuthorId)</label>
         <select asp-for="AuthorId">
-            @foreach(Author a in (List<Author>)ViewData["Authors"])
+            @foreach (AuthorDto a in (List<AuthorDto>)ViewData["Authors"]!)
             {
                 <option value="@a.Id">@a.Lastname @a.Firstname</option>
             }
