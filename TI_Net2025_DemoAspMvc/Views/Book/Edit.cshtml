@@ -13,10 +13,12 @@
     <div class="form-group">
         <label asp-for="Isbn">@Html.DisplayNameFor(model => model.Isbn)</label>
         <input asp-for="Isbn" class="form-control" />
+        <span asp-validation-for="Isbn" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Title">@Html.DisplayNameFor(model => model.Title)</label>
         <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="AuthorId">@Html.DisplayNameFor(model => model.AuthorId)</label>
@@ -26,14 +28,17 @@
                 <option value="@a.Id">@a.Lastname @a.Firstname</option>
             }
         </select>
+        <span asp-validation-for="AuthorId" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Release">@Html.DisplayNameFor(model => model.Release)</label>
         <input asp-for="Release" class="form-control" />
+        <span asp-validation-for="Release" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Description">@Html.DisplayNameFor(model => model.Description)</label>
         <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary mt-2">Edit</button>
 </form>

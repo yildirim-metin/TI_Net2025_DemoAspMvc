@@ -135,7 +135,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Author with id {book.AuthorId} doesn't exist");
             }
 
-            if (_bookRepository.ExistByIsbn(book.Isbn))
+            if ( isbn != book.Isbn && _bookRepository.ExistByIsbn(book.Isbn))
             {
                 throw new Exception($"Book with isbn {book.Isbn} already exist");
             }
