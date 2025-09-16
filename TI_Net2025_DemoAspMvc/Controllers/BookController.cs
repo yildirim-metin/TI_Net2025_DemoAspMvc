@@ -83,7 +83,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Author with id {book.AuthorId} doesn't exist");
             }
 
-            _bookRepository.Insert(book);
+            _bookRepository.Insert(book.ToBook());
 
             return RedirectToAction("Index", "Book");
         }
@@ -140,7 +140,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Book with isbn {book.Isbn} already exist");
             }
 
-            _bookRepository.Update(isbn, book);
+            _bookRepository.Update(isbn, book.ToBook());
 
             return RedirectToAction("Index", "Book");
         }

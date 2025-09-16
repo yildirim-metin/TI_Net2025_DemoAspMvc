@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using TI_Net2025_DemoAspMvc.Models.Dtos.Book;
 using TI_Net2025_DemoAspMvc.Models.Entities;
 
 namespace TI_Net2025_DemoAspMvc.Repositories
@@ -157,7 +156,7 @@ namespace TI_Net2025_DemoAspMvc.Repositories
             }
         }
 
-        public void Insert(BookFormDto book)
+        public void Insert(Book book)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -180,7 +179,7 @@ namespace TI_Net2025_DemoAspMvc.Repositories
             }
         }
 
-        public void Update(string isbn, BookFormDto book)
+        public void Update(string isbn, Book book)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
