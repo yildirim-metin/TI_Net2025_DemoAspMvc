@@ -73,7 +73,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 return View(book);
             }
 
-            if (_bookRepository.ExistByIsbn(book.Isbn))
+            if (_bookRepository.ExistById(book.Isbn))
             {
                 throw new Exception($"Book with isbn {book.Isbn} already exist");
             }
@@ -91,7 +91,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         [HttpGet("/book/edit/{isbn}")]
         public IActionResult Edit([FromRoute] string isbn)
         {
-            Book? book = _bookRepository.GetOne(isbn);
+            Book? book = _bookRepository.GetById(isbn);
 
             if (book == null)
             {
@@ -125,7 +125,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 return View(book);
             }
 
-            if (!_bookRepository.ExistByIsbn(isbn))
+            if (!_bookRepository.ExistById(isbn))
             {
                 throw new Exception($"Book with isbn {isbn} doesn't exist");
             }
@@ -135,7 +135,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
                 throw new Exception($"Author with id {book.AuthorId} doesn't exist");
             }
 
-            if ( isbn != book.Isbn && _bookRepository.ExistByIsbn(book.Isbn))
+            if ( isbn != book.Isbn && _bookRepository.ExistById(book.Isbn))
             {
                 throw new Exception($"Book with isbn {book.Isbn} already exist");
             }
@@ -149,12 +149,12 @@ namespace TI_Net2025_DemoAspMvc.Controllers
         public IActionResult Remove([FromRoute] string isbn)
         {
 
-            if (!_bookRepository.ExistByIsbn(isbn))
+            if (!_bookRepository.ExistById(isbn))
             {
                 throw new Exception($"Book with isbn {isbn} doesn't exist");
             }
 
-            _bookRepository.Delete(isbn);
+            _bookRepository.DeleteById(isbn);
 
             return RedirectToAction("Index", "Book");
         }
