@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TI_Net2025_DemoAspMvc.Mappers;
 using TI_Net2025_DemoAspMvc.Models.Dtos.Author;
 using TI_Net2025_DemoAspMvc.Models.Dtos.Book;
@@ -43,6 +44,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
             return View(book.ToBookDetailDto());
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             List<Author> authors = _authorRepository.GetAll();
@@ -56,6 +58,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
             return View(new BookFormDto());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Add([FromForm] BookFormDto book)
         {
@@ -88,6 +91,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
             return RedirectToAction("Index", "Book");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("/book/edit/{isbn}")]
         public IActionResult Edit([FromRoute] string isbn)
         {
@@ -109,6 +113,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
             return View(book.ToBookFormDto());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("/book/edit/{isbn}")]
         public IActionResult Edit([FromRoute] string isbn, [FromForm] BookFormDto book)
         {
@@ -145,6 +150,7 @@ namespace TI_Net2025_DemoAspMvc.Controllers
             return RedirectToAction("Index", "Book");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("/book/remove/{isbn}")]
         public IActionResult Remove([FromRoute] string isbn)
         {
